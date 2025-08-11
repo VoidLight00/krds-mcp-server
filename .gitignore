@@ -21,6 +21,12 @@ pids
 dist/
 build/
 *.tsbuildinfo
+*.d.ts
+*.d.ts.map
+*.js
+*.js.map
+!src/**/*.js
+!*.config.js
 
 # Logs
 logs/
@@ -73,6 +79,14 @@ attachments/
 # Puppeteer
 .local-chromium
 
-# Lock files (uncomment if you want to ignore them)
-# package-lock.json
+# Lock files
+package-lock.json
 # yarn.lock
+
+# Swarm and AI-related data
+.swarm/
+.claude-flow/metrics/
+*.db
+
+# Verification reports
+*VERIFICATION_REPORT*.md
