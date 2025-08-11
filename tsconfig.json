@@ -1,0 +1,84 @@
+{
+  "compilerOptions": {
+    // Target and Module Configuration
+    "target": "ES2022",                    // Target ES2022 for modern Node.js features
+    "module": "ESNext",                    // Use ESNext modules for tree shaking
+    "moduleResolution": "bundler",         // Modern module resolution
+    "lib": ["ES2022", "DOM"],              // Include ES2022 and DOM types
+    
+    // Output Configuration
+    "outDir": "./dist",                    // Output directory for compiled files
+    "rootDir": "./src",                    // Root directory of source files
+    "declaration": true,                   // Generate .d.ts files
+    "declarationMap": true,                // Generate declaration source maps
+    "sourceMap": true,                     // Generate source maps for debugging
+    "removeComments": false,               // Keep comments in output for documentation
+    
+    // Strict Type-Checking Options
+    "strict": true,                        // Enable all strict type-checking options
+    "noImplicitAny": true,                // Error on expressions with implied 'any'
+    "strictNullChecks": true,             // Enable strict null checks
+    "strictFunctionTypes": true,          // Enable strict checking of function types
+    "strictBindCallApply": true,          // Enable strict bind/call/apply methods
+    "strictPropertyInitialization": true, // Enable strict property initialization
+    "noImplicitReturns": true,            // Error when not all code paths return
+    "noImplicitThis": true,               // Error on 'this' expressions with implied 'any'
+    "alwaysStrict": true,                 // Parse in strict mode and emit "use strict"
+    
+    // Additional Checks
+    "noUnusedLocals": true,               // Error on unused local variables
+    "noUnusedParameters": true,           // Error on unused parameters
+    "exactOptionalPropertyTypes": true,   // Interpret optional properties exactly
+    "noImplicitOverride": true,           // Ensure override members are marked
+    "noPropertyAccessFromIndexSignature": false, // Allow property access from index signature
+    
+    // Module Configuration
+    "esModuleInterop": true,              // Enable esModule interop
+    "allowSyntheticDefaultImports": true, // Allow synthetic default imports
+    "forceConsistentCasingInFileNames": true, // Force consistent casing
+    "resolveJsonModule": true,            // Include modules imported with .json extension
+    "allowImportingTsExtensions": false,  // Don't allow importing .ts extensions
+    
+    // Path Mapping for Clean Imports
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@/tools/*": ["tools/*"],
+      "@/services/*": ["services/*"],
+      "@/scraping/*": ["scraping/*"],
+      "@/parsing/*": ["parsing/*"],
+      "@/cache/*": ["cache/*"],
+      "@/korean/*": ["korean/*"],
+      "@/types/*": ["types/*"],
+      "@/utils/*": ["utils/*"]
+    },
+    
+    // Advanced Options
+    "skipLibCheck": true,                 // Skip type checking of declaration files
+    "experimentalDecorators": true,       // Enable experimental decorator support
+    "emitDecoratorMetadata": true,        // Enable decorator metadata
+    
+    // Performance
+    "incremental": true,                  // Enable incremental compilation
+    "tsBuildInfoFile": "./dist/.tsbuildinfo" // Build info file location
+  },
+  "include": [
+    "src/**/*",                           // Include all source files
+    "tests/**/*"                          // Include test files for type checking
+  ],
+  "exclude": [
+    "node_modules",                       // Exclude node_modules
+    "dist",                               // Exclude build output
+    "**/*.js",                           // Exclude JS files
+    "**/*.spec.js",                      // Exclude compiled test files
+    "coverage"                           // Exclude coverage reports
+  ],
+  "ts-node": {
+    "esm": true,                         // Enable ESM support in ts-node
+    "experimentalSpecifierResolution": "node", // Node-style module resolution
+    "compilerOptions": {
+      "module": "ESNext",                // Use ESNext for ts-node
+      "target": "ES2022"                 // Target ES2022 for ts-node
+    }
+  }
+}

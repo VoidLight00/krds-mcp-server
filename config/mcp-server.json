@@ -1,0 +1,129 @@
+{
+  "name": "krds-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Korean government KRDS website scraping and content processing",
+  "author": "Your Name",
+  "license": "MIT",
+  
+  "server": {
+    "name": "krds-mcp-server",
+    "version": "1.0.0"
+  },
+  
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    },
+    "resources": {
+      "subscribe": false,
+      "listChanged": false
+    },
+    "prompts": {
+      "listChanged": false
+    },
+    "logging": {}
+  },
+  
+  "tools": [
+    {
+      "name": "krds_search",
+      "description": "Search KRDS website for Korean government records and documents"
+    },
+    {
+      "name": "krds_get_content",
+      "description": "Retrieve specific content from KRDS by URL or identifier"
+    },
+    {
+      "name": "krds_navigate",
+      "description": "Navigate through KRDS website structure and categories"
+    },
+    {
+      "name": "krds_export",
+      "description": "Export KRDS data in various formats (JSON, CSV, Excel)"
+    },
+    {
+      "name": "krds_get_images", 
+      "description": "Download and process images from KRDS documents"
+    },
+    {
+      "name": "krds_analyze_korean_text",
+      "description": "Process and analyze Korean text with language-specific features"
+    }
+  ],
+  
+  "korean": {
+    "enabled": true,
+    "features": {
+      "stemming": true,
+      "romanization": true,
+      "hangul_processing": true,
+      "keyword_extraction": true
+    }
+  },
+  
+  "scraping": {
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 30,
+      "concurrent_requests": 3
+    },
+    "retry": {
+      "max_attempts": 3,
+      "delay_ms": 1000,
+      "backoff_multiplier": 2
+    },
+    "timeout": {
+      "page_load_ms": 30000,
+      "navigation_ms": 10000,
+      "network_idle_ms": 2000
+    }
+  },
+  
+  "caching": {
+    "enabled": true,
+    "type": ["redis", "memory", "file"],
+    "ttl": 3600000,
+    "maxSize": 5000,
+    "redis": {
+      "host": "localhost",
+      "port": 6379,
+      "db": 0,
+      "keyPrefix": "krds:cache:",
+      "enableCompression": true,
+      "enablePubSub": true,
+      "poolSize": 3,
+      "maxRetries": 3
+    },
+    "memory": {
+      "maxMemoryMB": 150,
+      "cleanupInterval": 60000
+    },
+    "file": {
+      "baseDir": "./cache-storage",
+      "maxSizeMB": 1000,
+      "cleanupInterval": 300000,
+      "enableCompression": true,
+      "compressionThreshold": 51200
+    },
+    "strategy": {
+      "defaultStrategy": "korean-optimized",
+      "koreanContentBoost": 1.3,
+      "enablePredictive": true
+    },
+    "monitoring": {
+      "enabled": true,
+      "metricsInterval": 30000,
+      "alertThresholds": {
+        "hitRateMin": 0.75,
+        "latencyMax": 800,
+        "errorRateMax": 0.05
+      }
+    }
+  },
+  
+  "logging": {
+    "level": "info",
+    "file_enabled": true,
+    "console_enabled": true
+  }
+}
