@@ -32,8 +32,6 @@
     "exactOptionalPropertyTypes": false,  // Allow flexible optional properties
     "noImplicitOverride": false,          // Allow implicit overrides for now
     "noPropertyAccessFromIndexSignature": false, // Allow property access from index signature
-    "suppressImplicitAnyIndexErrors": true, // Suppress implicit any errors
-    "suppressExcessPropertyErrors": true, // Suppress excess property errors
     "noErrorTruncation": false,           // Allow error truncation
     "noUncheckedIndexedAccess": false,    // Allow unchecked indexed access
     
