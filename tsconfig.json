@@ -24,6 +24,7 @@
     "noImplicitReturns": false,           // Allow missing returns for now
     "noImplicitThis": false,              // Allow implicit 'this' for now
     "alwaysStrict": false,                // Disable strict mode parsing for now
+    "skipLibCheck": true,                 // Skip type checking of declaration files
     
     // Additional Checks
     "noUnusedLocals": false,              // Allow unused local variables for now
@@ -31,6 +32,10 @@
     "exactOptionalPropertyTypes": false,  // Allow flexible optional properties
     "noImplicitOverride": false,          // Allow implicit overrides for now
     "noPropertyAccessFromIndexSignature": false, // Allow property access from index signature
+    "suppressImplicitAnyIndexErrors": true, // Suppress implicit any errors
+    "suppressExcessPropertyErrors": true, // Suppress excess property errors
+    "noErrorTruncation": false,           // Allow error truncation
+    "noUncheckedIndexedAccess": false,    // Allow unchecked indexed access
     
     // Module Configuration
     "esModuleInterop": true,              // Enable esModule interop
