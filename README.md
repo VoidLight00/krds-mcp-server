@@ -1,195 +1,195 @@
-# KRDS MCP Server
+# KRDS MCP 서버 🇰🇷
 
-A comprehensive Model Context Protocol (MCP) server for scraping, processing, and analyzing Korean government documents from the KRDS website (https://v04.krds.go.kr).
+KRDS 웹사이트(https://v04.krds.go.kr)의 한국 정부 문서를 스크래핑, 처리, 분석하기 위한 포괄적인 Model Context Protocol(MCP) 서버입니다.
 
-## 🚀 Features
+## 🚀 주요 기능
 
-### Core Capabilities
-- **Korean Language Processing**: Advanced Korean text analysis with romanization, stemming, and keyword extraction
-- **Intelligent Scraping**: Puppeteer-based scraping with retry mechanisms and rate limiting
-- **Multi-tier Caching**: Memory, Redis, and file-based caching with Korean text optimization
-- **MCP Tools**: Complete set of tools for document retrieval, search, navigation, and export
-- **Performance Optimized**: Concurrent processing, connection pooling, and resource management
-- **Comprehensive Testing**: Unit, integration, and E2E tests with 80%+ code coverage
+### 핵심 역량
+- **🇰🇷 한국어 처리**: 로마자 변환, 어간 추출, 키워드 추출을 포함한 고급 한국어 텍스트 분석
+- **🧠 지능형 스크래핑**: 재시도 메커니즘과 속도 제한 기능을 갖춘 Puppeteer 기반 스크래핑
+- **⚡ 다층 캐싱**: 한국어 텍스트 최적화를 포함한 메모리, Redis, 파일 기반 캐싱
+- **🛠️ MCP 도구**: 문서 검색, 탐색, 내비게이션, 내보내기를 위한 완전한 도구 세트
+- **🚀 성능 최적화**: 동시 처리, 연결 풀링, 리소스 관리
+- **🧪 포괄적 테스트**: 80% 이상의 코드 커버리지를 가진 단위, 통합, E2E 테스트
 
-### MCP Tools
-- `retrieve_content` - Retrieve documents by URL or ID with Korean processing
-- `search_documents` - Search KRDS website with advanced Korean language support
-- `navigate_site` - Browse website structure and categories
-- `export_documents` - Export data in multiple formats (JSON, CSV, Excel, PDF)
-- `process_images` - Download and process document images
-- `analyze_korean_text` - Advanced Korean text analysis with linguistic features
+### MCP 도구들
+- `retrieve_content` - 한국어 처리와 함께 URL 또는 ID로 문서 검색
+- `search_documents` - 고급 한국어 언어 지원을 통한 KRDS 웹사이트 검색
+- `navigate_site` - 웹사이트 구조 및 카테고리 탐색
+- `export_documents` - 다양한 형식으로 데이터 내보내기 (JSON, CSV, Excel, PDF)
+- `process_images` - 문서 이미지 다운로드 및 처리
+- `analyze_korean_text` - 언어학적 특징을 포함한 고급 한국어 텍스트 분석
 
-## 📁 Project Structure
+## 📁 프로젝트 구조
 
 ```
 krds-mcp-server/
-├── src/                      # Source code
-│   ├── server.ts            # Main MCP server entry point
-│   ├── tools/               # MCP tool implementations
-│   │   ├── content-retrieval.ts
-│   │   ├── search.ts        # Search functionality
-│   │   ├── navigation.ts    # Website navigation
-│   │   ├── export.ts        # Data export tools
-│   │   ├── image-tools.ts   # Image processing
-│   │   └── korean-text.ts   # Korean text analysis
-│   ├── scraping/            # Web scraping modules
-│   │   ├── krds-scraper.ts  # Main KRDS scraper
-│   │   ├── navigation-crawler.ts
-│   │   ├── content-integration.ts
-│   │   └── rate-limiter.ts
-│   ├── parsing/             # Content parsing
-│   │   ├── content-parser.ts
-│   │   ├── korean-text-processor.ts
-│   │   ├── image-extractor.ts
-│   │   ├── metadata-extractor.ts
-│   │   └── table-parser.ts
-│   ├── cache/               # Caching system
-│   │   ├── cache-manager.ts
-│   │   ├── memory-cache.ts
-│   │   ├── redis-cache.ts
-│   │   ├── file-cache.ts
-│   │   └── cache-strategies.ts
-│   ├── korean/              # Korean language processing
-│   ├── types/               # TypeScript definitions
+├── src/                      # 소스 코드
+│   ├── server.ts            # MCP 서버 메인 진입점
+│   ├── tools/               # MCP 도구 구현체
+│   │   ├── content-retrieval.ts  # 콘텐츠 검색 도구
+│   │   ├── search.ts        # 검색 기능
+│   │   ├── navigation.ts    # 웹사이트 내비게이션
+│   │   ├── export.ts        # 데이터 내보내기 도구
+│   │   ├── image-tools.ts   # 이미지 처리
+│   │   └── korean-text.ts   # 한국어 텍스트 분석
+│   ├── scraping/            # 웹 스크래핑 모듈
+│   │   ├── krds-scraper.ts  # KRDS 메인 스크래퍼
+│   │   ├── navigation-crawler.ts  # 내비게이션 크롤러
+│   │   ├── content-integration.ts # 콘텐츠 통합
+│   │   └── rate-limiter.ts        # 속도 제한기
+│   ├── parsing/             # 콘텐츠 파싱
+│   │   ├── content-parser.ts      # 콘텐츠 파서
+│   │   ├── korean-text-processor.ts # 한국어 텍스트 프로세서
+│   │   ├── image-extractor.ts     # 이미지 추출기
+│   │   ├── metadata-extractor.ts  # 메타데이터 추출기
+│   │   └── table-parser.ts        # 테이블 파서
+│   ├── cache/               # 캐싱 시스템
+│   │   ├── cache-manager.ts       # 캐시 관리자
+│   │   ├── memory-cache.ts        # 메모리 캐시
+│   │   ├── redis-cache.ts         # Redis 캐시
+│   │   ├── file-cache.ts          # 파일 캐시
+│   │   └── cache-strategies.ts    # 캐시 전략
+│   ├── korean/              # 한국어 언어 처리
+│   ├── types/               # TypeScript 타입 정의
 │   │   └── index.ts
-│   └── utils/               # Utility functions
-│       ├── config.ts
-│       └── logger.ts
-├── tests/                   # Test suites
-│   ├── unit/               # Unit tests
-│   ├── integration/        # Integration tests
-│   ├── e2e/               # End-to-end tests
-│   ├── helpers/           # Test utilities
-│   └── mock-data/         # Test data
-├── docs/                   # Documentation
-├── config/                 # Configuration files
-└── dist/                  # Compiled output
+│   └── utils/               # 유틸리티 함수
+│       ├── config.ts        # 설정
+│       └── logger.ts        # 로깅
+├── tests/                   # 테스트 스위트
+│   ├── unit/               # 단위 테스트
+│   ├── integration/        # 통합 테스트
+│   ├── e2e/               # 엔드투엔드 테스트
+│   ├── helpers/           # 테스트 유틸리티
+│   └── mock-data/         # 테스트 데이터
+├── docs/                   # 문서
+├── config/                 # 설정 파일
+└── dist/                  # 컴파일된 출력물
 ```
 
-## 🛠️ Installation
+## 🛠️ 설치 방법
 
-### Prerequisites
-- Node.js 18.0.0 or higher
-- npm 9.0.0 or higher
-- TypeScript 5.3.0 or higher
-- Redis (optional, for distributed caching)
+### 사전 요구사항
+- Node.js 18.0.0 이상
+- npm 9.0.0 이상
+- TypeScript 5.3.0 이상
+- Redis (선택사항, 분산 캐싱용)
 
-### Quick Start
+### 빠른 시작
 
-1. **Clone the repository**
+1. **저장소 복제**
    ```bash
    git clone https://github.com/yourusername/krds-mcp-server.git
    cd krds-mcp-server
    ```
 
-2. **Install dependencies**
+2. **종속성 설치**
    ```bash
    npm install
    ```
 
-3. **Configure environment**
+3. **환경 설정**
    ```bash
    cp .env.example .env
-   # Edit .env with your configuration
+   # .env 파일을 편집하여 설정을 입력하세요
    ```
 
-4. **Build the project**
+4. **프로젝트 빌드**
    ```bash
    npm run build
    ```
 
-5. **Start the server**
+5. **서버 시작**
    ```bash
    npm start
    ```
 
-### Development Setup
+### 개발 환경 설정
 
 ```bash
-# Run in development mode with hot reloading
+# 핫 리로딩을 사용한 개발 모드 실행
 npm run dev
 
-# Run with specific configuration
+# 특정 설정으로 실행
 NODE_ENV=development LOG_LEVEL=debug npm run dev
 ```
 
-### Docker Setup
+### Docker 설정
 
 ```bash
-# Build Docker image
+# Docker 이미지 빌드
 npm run docker:build
 
-# Run with Docker Compose
+# Docker Compose로 실행
 docker-compose up -d
 
-# Or run single container
+# 또는 단일 컨테이너 실행
 npm run docker:run
 ```
 
-## ⚙️ Configuration
+## ⚙️ 설정
 
-### Environment Variables
+### 환경 변수
 
-Create a `.env` file in the project root:
+프로젝트 루트에 `.env` 파일을 생성하세요:
 
 ```bash
-# Server Configuration
+# 서버 설정
 NODE_ENV=production
 PORT=3000
 LOG_LEVEL=info
 
-# KRDS Website Configuration
+# KRDS 웹사이트 설정
 KRDS_BASE_URL=https://v04.krds.go.kr
 KRDS_TIMEOUT=30000
 KRDS_RETRY_ATTEMPTS=3
 KRDS_RETRY_DELAY=1000
 KRDS_USER_AGENT=KRDS-MCP-Server/1.0.0
 
-# Rate Limiting
+# 속도 제한 설정
 KRDS_RATE_LIMIT_ENABLED=true
 KRDS_REQUESTS_PER_MINUTE=60
 KRDS_CONCURRENT_REQUESTS=5
 
-# Puppeteer Configuration
+# Puppeteer 설정
 PUPPETEER_HEADLESS=true
 PUPPETEER_TIMEOUT=30000
 PUPPETEER_SLOWMO=0
 PUPPETEER_VIEWPORT_WIDTH=1920
 PUPPETEER_VIEWPORT_HEIGHT=1080
 
-# Cache Configuration
+# 캐시 설정
 CACHE_TYPE=memory,redis,file
 CACHE_TTL=3600
 CACHE_MAX_SIZE=104857600
 
-# Memory Cache
+# 메모리 캐시
 CACHE_MEMORY_MAX_MB=100
 CACHE_MEMORY_CLEANUP_INTERVAL=300
 
-# Redis Cache (optional)
+# Redis 캐시 (선택사항)
 REDIS_HOST=localhost
 REDIS_PORT=6379
 REDIS_PASSWORD=
 REDIS_DB=0
 REDIS_KEY_PREFIX=krds:
 
-# File Cache
+# 파일 캐시
 CACHE_FILE_BASE_DIR=/tmp/krds-cache
 CACHE_FILE_MAX_SIZE_MB=500
 CACHE_FILE_CLEANUP_INTERVAL=3600
 
-# Korean Language Processing
+# 한국어 언어 처리
 KOREAN_PROCESSING_ENABLED=true
 KOREAN_STEMMING_ENABLED=true
 KOREAN_ROMANIZATION_ENABLED=true
 KOREAN_KEYWORD_EXTRACTION_ENABLED=true
 
-# Export Configuration
+# 내보내기 설정
 EXPORT_MAX_FILE_SIZE_MB=50
 EXPORT_DEFAULT_FORMAT=json
 
-# Security
+# 보안 설정
 CORS_ENABLED=true
 CORS_ORIGIN=*
 HELMET_ENABLED=true
@@ -197,47 +197,47 @@ RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX_REQUESTS=100
 ```
 
-### Advanced Configuration
+### 고급 설정
 
-For detailed configuration options, see the [Configuration Guide](./docs/configuration.md).
+자세한 설정 옵션은 [설정 가이드](./docs/configuration.md)를 참조하세요.
 
-## 🧪 Testing
+## 🧪 테스트
 
-### Running Tests
+### 테스트 실행
 
 ```bash
-# Run all tests
+# 모든 테스트 실행
 npm test
 
-# Run specific test suites
-npm run test:unit          # Unit tests only
-npm run test:integration   # Integration tests only
-npm run test:e2e          # End-to-end tests only
+# 특정 테스트 스위트 실행
+npm run test:unit          # 단위 테스트만 실행
+npm run test:integration   # 통합 테스트만 실행
+npm run test:e2e          # 엔드투엔드 테스트만 실행
 
-# Run tests with coverage
+# 커버리지와 함께 테스트 실행
 npm run test:coverage
 
-# Run tests in watch mode
+# 감시 모드에서 테스트 실행
 npm run test:watch
 
-# Run tests with specific pattern
+# 특정 패턴으로 테스트 실행
 npm test -- --testNamePattern="Korean.*processing"
 ```
 
-### Test Structure
+### 테스트 구조
 
-- **Unit Tests** (`tests/unit/`): Test individual components in isolation
-- **Integration Tests** (`tests/integration/`): Test component interactions
-- **E2E Tests** (`tests/e2e/`): Test complete workflows and MCP protocol compliance
+- **단위 테스트** (`tests/unit/`): 개별 구성 요소를 독립적으로 테스트
+- **통합 테스트** (`tests/integration/`): 구성 요소 간의 상호작용 테스트
+- **E2E 테스트** (`tests/e2e/`): 완전한 워크플로와 MCP 프로토콜 준수성 테스트
 
-### Korean Text Testing
+### 한국어 텍스트 테스트
 
-The test suite includes comprehensive Korean language processing tests:
+테스트 스위트에는 포괄적인 한국어 언어 처리 테스트가 포함되어 있습니다:
 
 ```typescript
-// Example Korean text test
-describe('Korean Text Processing', () => {
-  it('should process government policy documents', async () => {
+// 한국어 텍스트 테스트 예제
+describe('한국어 텍스트 처리', () => {
+  it('정부 정책 문서를 처리해야 함', async () => {
     const koreanText = '교육부는 새로운 정책을 발표했습니다.';
     const analysis = await koreanProcessor.analyzeText(koreanText);
     
@@ -248,21 +248,21 @@ describe('Korean Text Processing', () => {
 });
 ```
 
-### Performance Testing
+### 성능 테스트
 
 ```bash
-# Run performance benchmarks
+# 성능 벤치마크 실행
 npm run test:performance
 
-# Profile memory usage
+# 메모리 사용량 프로파일링
 NODE_OPTIONS="--max-old-space-size=2048" npm run test:e2e
 ```
 
-## 📚 MCP Tools Documentation
+## 📚 MCP 도구 문서
 
-### Content Retrieval Tool
+### 콘텐츠 검색 도구
 
-Retrieve Korean government documents with full text processing.
+전체 텍스트 처리 기능을 포함한 한국 정부 문서 검색.
 
 ```javascript
 {
@@ -276,14 +276,14 @@ Retrieve Korean government documents with full text processing.
 }
 ```
 
-**Parameters:**
-- `url` (string) - KRDS document URL
-- `documentId` (string) - Alternative to URL, document identifier
-- `includeImages` (boolean, default: true) - Extract and process images
-- `includeAttachments` (boolean, default: true) - Include file attachments
-- `processKoreanText` (boolean, default: true) - Enable Korean text processing
+**매개변수:**
+- `url` (문자열) - KRDS 문서 URL
+- `documentId` (문자열) - URL 대신 사용할 문서 식별자
+- `includeImages` (불린, 기본값: true) - 이미지 추출 및 처리
+- `includeAttachments` (불린, 기본값: true) - 첨부 파일 포함
+- `processKoreanText` (불린, 기본값: true) - 한국어 텍스트 처리 활성화
 
-**Response:**
+**응답:**
 ```javascript
 {
   "success": true,
@@ -307,9 +307,9 @@ Retrieve Korean government documents with full text processing.
 }
 ```
 
-### Search Tool
+### 검색 도구
 
-Search KRDS documents with advanced Korean language support.
+고급 한국어 언어 지원을 통한 KRDS 문서 검색.
 
 ```javascript
 {
@@ -324,9 +324,16 @@ Search KRDS documents with advanced Korean language support.
 }
 ```
 
-### Korean Text Analysis Tool
+**매개변수:**
+- `query` (문자열) - 검색 쿼리 (한국어 지원)
+- `category` (문자열, 선택사항) - 검색할 카테고리 (예: "교육", "보건", "경제")
+- `maxResults` (숫자, 기본값: 10) - 최대 결과 수
+- `sortBy` (문자열, 기본값: "relevance") - 정렬 기준 ("date", "relevance", "title")
+- `sortOrder` (문자열, 기본값: "desc") - 정렬 순서 ("asc", "desc")
 
-Perform advanced Korean text analysis with linguistic features.
+### 한국어 텍스트 분석 도구
+
+언어학적 기능을 포함한 고급 한국어 텍스트 분석 수행.
 
 ```javascript
 {
@@ -341,7 +348,14 @@ Perform advanced Korean text analysis with linguistic features.
 }
 ```
 
-**Response:**
+**매개변수:**
+- `texts` (배열) - 분석할 한국어 텍스트 배열
+- `includeRomanization` (불린, 기본값: false) - 로마자 변환 포함
+- `includeSentiment` (불린, 기본값: false) - 감정 분석 포함
+- `extractKeywords` (불린, 기본값: true) - 키워드 추출
+- `analyzeStemming` (불린, 기본값: false) - 어간 분석 포함
+
+**응답:**
 ```javascript
 {
   "success": true,
@@ -357,9 +371,9 @@ Perform advanced Korean text analysis with linguistic features.
 }
 ```
 
-### Navigation Tool
+### 내비게이션 도구
 
-Browse KRDS website structure and categories.
+KRDS 웹사이트 구조 및 카테고리 탐색.
 
 ```javascript
 {
@@ -378,15 +392,20 @@ Browse KRDS website structure and categories.
 }
 ```
 
-### Export Tool
+**매개변수:**
+- `action` (문자열) - 수행할 작업 ("list_categories", "browse_category", "get_sitemap")
+- `category` (문자열, 선택사항) - 탐색할 카테고리 (예: "education", "health", "economy")
+- `depth` (숫자, 선택사항) - 탐색 깊이 (기본값: 2)
 
-Export documents in multiple formats.
+### 내보내기 도구
+
+다양한 형식으로 문서 내보내기.
 
 ```javascript
 {
   "name": "export_documents",
   "arguments": {
-    "documents": [/* document objects */],
+    "documents": [/* 문서 객체들 */],
     "format": "pdf",
     "includeImages": true,
     "filename": "education-policies-2024"
@@ -394,122 +413,129 @@ Export documents in multiple formats.
 }
 ```
 
-Supported formats: `json`, `csv`, `xlsx`, `pdf`, `xml`
+**매개변수:**
+- `documents` (배열) - 내보낼 문서 객체 배열
+- `format` (문자열) - 내보내기 형식 ("json", "csv", "xlsx", "pdf", "xml")
+- `includeImages` (불린, 기본값: false) - 이미지 포함 여부
+- `filename` (문자열, 선택사항) - 출력 파일명
+- `encoding` (문자열, 기본값: "utf-8") - 텍스트 인코딩
 
-## 🚀 Performance
+**지원 형식:** `json`, `csv`, `xlsx`, `pdf`, `xml`
 
-### Optimization Features
+## 🚀 성능
 
-- **Connection Pooling**: Reuse browser instances and HTTP connections
-- **Intelligent Caching**: Multi-tier caching with Korean text optimization
-- **Concurrent Processing**: Parallel document processing
-- **Rate Limiting**: Respectful scraping with configurable limits
-- **Memory Management**: Automatic cleanup and resource monitoring
+### 최적화 기능
 
-### Performance Benchmarks
+- **⚡ 연결 풀링**: 브라우저 인스턴스 및 HTTP 연결 재사용
+- **🧠 지능형 캐싱**: 한국어 텍스트 최적화를 포함한 다층 캐싱
+- **🔄 동시 처리**: 병렬 문서 처리
+- **⏰ 속도 제한**: 설정 가능한 제한으로 정중한 스크래핑
+- **🗄️ 메모리 관리**: 자동 정리 및 리소스 모니터링
 
-Typical performance metrics on modern hardware:
+### 성능 벤치마크
 
-| Operation | Time | Throughput |
-|-----------|------|------------|
-| Document Retrieval | 1.5-3s | 20-40 docs/min |
-| Korean Text Analysis | 50-200ms | 300-1200 texts/min |
-| Search Query | 0.8-2s | 30-75 queries/min |
-| Cache Hit | 5-20ms | 3000+ ops/min |
+최신 하드웨어에서의 일반적인 성능 지표:
 
-### Monitoring
+| 작업 | 시간 | 처리량 |
+|------|------|---------|
+| 문서 검색 | 1.5-3초 | 20-40 문서/분 |
+| 한국어 텍스트 분석 | 50-200ms | 300-1200 텍스트/분 |
+| 검색 쿼리 | 0.8-2초 | 30-75 쿼리/분 |
+| 캐시 히트 | 5-20ms | 3000+ 연산/분 |
+
+### 모니터링
 
 ```bash
-# View performance metrics
+# 성능 메트릭 보기
 curl http://localhost:3000/metrics
 
-# Check cache statistics
+# 캐시 통계 확인
 curl http://localhost:3000/cache/stats
 
-# Health check
+# 건강 상태 확인
 curl http://localhost:3000/health
 ```
 
-## 🔧 Development
+## 🔧 개발
 
-### Code Quality
+### 코드 품질
 
 ```bash
-# Linting
+# 린팅
 npm run lint
 npm run lint:fix
 
-# Formatting  
+# 포매팅  
 npm run format
 npm run format:check
 
-# Type checking
+# 타입 검사
 npm run typecheck
 ```
 
-### Debugging
+### 디버깅
 
 ```bash
-# Run with debug logs
+# 디버그 로그와 함께 실행
 LOG_LEVEL=debug npm run dev
 
-# Enable specific debug namespaces
+# 특정 디버그 네임스페이스 활성화
 DEBUG=krds:scraper,krds:parser npm run dev
 
-# Profile performance
+# 성능 프로파일링
 NODE_OPTIONS="--inspect" npm run dev
 ```
 
-### Adding New Tools
+### 새로운 도구 추가
 
-1. Create tool file in `src/tools/your-tool.ts`:
+1. `src/tools/your-tool.ts`에 도구 파일 생성:
 
 ```typescript
 import type { Tool } from '@modelcontextprotocol/sdk/types.js';
 
 export const yourTool: Tool = {
   name: 'your_tool_name',
-  description: 'Tool description',
+  description: '도구 설명',
   inputSchema: {
     type: 'object',
     properties: {
-      param: { type: 'string', description: 'Parameter description' }
+      param: { type: 'string', description: '매개변수 설명' }
     },
     required: ['param']
   }
 };
 
 export async function yourToolHandler(params: any, context: ToolContext) {
-  // Implementation
+  // 구현 코드
 }
 ```
 
-2. Register in `src/tools/index.ts`
-3. Add tests in `tests/unit/tools/your-tool.test.ts`
-4. Update documentation
+2. `src/tools/index.ts`에 등록
+3. `tests/unit/tools/your-tool.test.ts`에 테스트 추가
+4. 문서 업데이트
 
-## 🚢 Deployment
+## 🚢 배포
 
-### Production Deployment
+### 프로덕션 배포
 
 ```bash
-# Build for production
+# 프로덕션용 빌드
 npm run build
 
-# Start production server
+# 프로덕션 서버 시작
 NODE_ENV=production npm start
 
-# Or use PM2
+# 또는 PM2 사용
 pm2 start ecosystem.config.js
 ```
 
-### Docker Deployment
+### Docker 배포
 
 ```bash
-# Build image
+# 이미지 빌드
 docker build -t krds-mcp-server .
 
-# Run container
+# 컨테이너 실행
 docker run -d \
   --name krds-mcp-server \
   -p 3000:3000 \
@@ -518,85 +544,85 @@ docker run -d \
   krds-mcp-server
 ```
 
-### Environment-Specific Configurations
+### 환경별 설정
 
-- **Development**: `.env.development`
-- **Testing**: `.env.test`
-- **Staging**: `.env.staging`
-- **Production**: `.env.production`
+- **개발**: `.env.development`
+- **테스트**: `.env.test`
+- **스테이징**: `.env.staging`
+- **프로덕션**: `.env.production`
 
-### Health Checks
+### 건강 상태 검사
 
-The server provides health check endpoints:
+서버는 건강 상태 검사 엔드포인트를 제공합니다:
 
 ```bash
-# Basic health check
+# 기본 건강 상태 검사
 GET /health
 
-# Detailed health check
+# 상세 건강 상태 검사
 GET /health/detailed
 
-# Ready check
+# 준비 상태 검사
 GET /ready
 ```
 
-### Monitoring and Logging
+### 모니터링 및 로깅
 
-- **Structured Logging**: JSON logs with correlation IDs
-- **Metrics**: Prometheus-compatible metrics endpoint
-- **Error Tracking**: Comprehensive error logging with stack traces
-- **Performance Monitoring**: Request timing and resource usage
+- **구조화된 로깅**: 상관관계 ID가 포함된 JSON 로그
+- **메트릭**: Prometheus 호환 메트릭 엔드포인트
+- **오류 추적**: 스택 트레이스를 포함한 포괄적인 오류 로깅
+- **성능 모니터링**: 요청 시간 및 리소스 사용량
 
-## 🤝 Contributing
+## 🤝 기여
 
-We welcome contributions! Please see our [Contributing Guide](./docs/contributing.md) for details.
+기여를 환영합니다! 자세한 내용은 [기여 가이드](./docs/contributing.md)를 참조하세요.
 
-### Quick Start for Contributors
+### 기여자를 위한 빠른 시작
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes
-4. Add tests for new functionality
-5. Ensure all tests pass: `npm test`
-6. Commit changes: `git commit -m 'Add amazing feature'`
-7. Push to branch: `git push origin feature/amazing-feature`
-8. Open a Pull Request
+1. 저장소 포크
+2. 기능 브랜치 생성: `git checkout -b feature/amazing-feature`
+3. 변경 사항 작성
+4. 새로운 기능에 대한 테스트 추가
+5. 모든 테스트 통과 확인: `npm test`
+6. 변경 사항 커밋: `git commit -m 'Add amazing feature'`
+7. 브랜치에 푸시: `git push origin feature/amazing-feature`
+8. Pull Request 열기
 
-### Development Guidelines
+### 개발 가이드라인
 
-- Follow TypeScript best practices
-- Add comprehensive tests for new features
-- Update documentation for API changes
-- Use conventional commit messages
-- Ensure Korean text handling is properly tested
+- TypeScript 모범 사례 준수
+- 새로운 기능에 대한 포괄적인 테스트 추가
+- API 변경에 대한 문서 업데이트
+- 반식 커밋 메시지 사용
+- 한국어 텍스트 처리가 제대로 테스트되도록 보장
 
-## 📄 License
+## 📄 라이선스
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT 라이선스 - 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
 
-## 🐛 Issues and Support
+## 🐛 문제 및 지원
 
-- **Bug Reports**: [GitHub Issues](https://github.com/yourusername/krds-mcp-server/issues)
-- **Feature Requests**: [GitHub Discussions](https://github.com/yourusername/krds-mcp-server/discussions)
-- **Security Issues**: Send email to security@yourserver.com
+- **버그 리포트**: [GitHub Issues](https://github.com/yourusername/krds-mcp-server/issues)
+- **기능 요청**: [GitHub Discussions](https://github.com/yourusername/krds-mcp-server/discussions)
+- **보안 문제**: security@yourserver.com으로 이메일 송부
 
-## 📖 Additional Documentation
+## 📖 추가 문서
 
-- [API Documentation](./docs/api.md)
-- [Configuration Guide](./docs/configuration.md)
-- [Deployment Guide](./docs/deployment.md)
-- [Korean Language Processing](./docs/korean-processing.md)
-- [Architecture Overview](./docs/architecture.md)
-- [Contributing Guide](./docs/contributing.md)
+- [API 문서](./docs/api.md)
+- [설정 가이드](./docs/configuration.md)
+- [배포 가이드](./docs/deployment.md)
+- [한국어 언어 처리](./docs/korean-processing.md)
+- [아키텍처 개요](./docs/architecture.md)
+- [기여 가이드](./docs/contributing.md)
 
-## 🙏 Acknowledgments
+## 🙏 감사 인사
 
-- Korean government for providing KRDS data access
-- MCP SDK developers and community
-- Korean language processing library maintainers
-- Open source testing and development tools
-- Contributors and community members
+- KRDS 데이터 액세스를 제공해주신 한국 정부
+- MCP SDK 개발자들과 커뮤니티
+- 한국어 언어 처리 라이브러리 유지보수자들
+- 오픈소스 테스트 및 개발 도구들
+- 기여자들과 커뮤니티 멤버들
 
 ---
 
-Built with ❤️ for the Korean government data community
+한국 정부 데이터 커뮤니티를 위해 ❤️으로 제작되었습니다
