@@ -28,6 +28,7 @@ import { registerNavigationTool } from './navigation.js';
 import { registerImageToolsTool } from './image-tools.js';
 import { registerExportTool } from './export.js';
 import { registerKoreanTextTool } from './korean-text.js';
+import { registerDesignSystemTools } from './design-system.js';
 
 // Export individual tool schemas for type checking
 export { SearchToolSchema } from './search.js';
@@ -36,6 +37,15 @@ export { NavigationSchema } from './navigation.js';
 export { ImageToolsSchema } from './image-tools.js';
 export { ExportSchema } from './export.js';
 export { KoreanTextSchema } from './korean-text.js';
+export {
+  AnalyzeDesignSystemSchema,
+  ExtractComponentsSchema,
+  GetDesignTokensSchema,
+  GenerateCodeSnippetSchema,
+  CreateInterfaceSchema,
+  AnalyzeAccessibilitySchema,
+  ExportDesignSystemSchema,
+} from './design-system.js';
 
 // Export types for external use
 export type { SearchParams } from './search.js';
@@ -105,6 +115,16 @@ export const TOOL_REGISTRY: ToolRegistration[] = [
     categories: ['text-processing', 'korean-language', 'nlp'],
     dependencies: ['koreanTextProcessor'],
     registerFunction: registerKoreanTextTool,
+  },
+  {
+    name: 'krds_design_system',
+    description: 'Extract and analyze design system information from KRDS website including UI patterns, design tokens, and components',
+    version: '1.0.0',
+    categories: ['design-system', 'ui-patterns', 'accessibility', 'government-standards'],
+    dependencies: ['krdsService', 'cacheManager'],
+    registerFunction: async (server: Server, context: ToolContext) => {
+      return registerDesignSystemTools(server, context);
+    },
   },
 ];
 
@@ -271,6 +291,10 @@ export const TOOLS_CONFIG = {
     'text-processing',
     'korean-language',
     'nlp',
+    'design-system',
+    'ui-patterns',
+    'accessibility',
+    'government-standards',
   ],
   supportedLanguages: ['ko', 'en'],
   supportedFormats: ['json', 'csv', 'xlsx', 'pdf', 'xml', 'markdown', 'html'],
@@ -283,6 +307,12 @@ export const TOOLS_CONFIG = {
     'Content caching',
     'Semantic search',
     'Metadata extraction',
+    'Design system analysis',
+    'UI pattern extraction',
+    'Design token management',
+    'Component code generation',
+    'Accessibility compliance',
+    'Government standards validation',
   ],
 } as const;
 

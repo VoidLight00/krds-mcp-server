@@ -16,7 +16,7 @@
         "id": 2,
         "title": "TypeScript 컴파일 오류 해결",
         "description": "222개의 TypeScript 컴파일 오류 모두 수정",
-        "status": "pending",
+        "status": "done",
         "priority": "high",
         "details": "현재 server.ts는 컴파일 오류가 많아 server-simple.ts만 작동. 타입 정의, import 문제 등 해결 필요.",
         "testStrategy": "npm run build 실행하여 오류 없이 컴파일 확인",
@@ -135,7 +135,7 @@
       "lastModified": "2025-01-11T19:00:00Z",
       "currentTag": "master",
       "description": "Tasks for master context",
-      "updated": "2025-08-11T20:46:59.777Z"
+      "updated": "2025-08-12T06:19:14.051Z"
     }
   }
 }
