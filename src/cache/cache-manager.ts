@@ -19,13 +19,13 @@
  */
 
 import type { Logger } from 'winston';
-import type { CacheEntry, CacheStats, CacheConfig } from '@/types/index.js';
+import type { CacheEntry, CacheStats, CacheConfig } from '../types/index.js';
 import { MemoryCache } from './memory-cache.js';
 import { RedisCache } from './redis-cache.js';
 import { FileCache } from './file-cache.js';
 import { CacheStrategies, type CacheStrategy } from './cache-strategies.js';
 import { CacheMonitor } from './cache-monitor.js';
-import { KrdsError } from '@/types/index.js';
+import { KrdsError } from '../types/index.js';
 
 export interface CacheBackend {
   name: string;

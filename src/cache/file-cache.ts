@@ -27,7 +27,7 @@ import { promisify } from 'util';
 import { pipeline } from 'stream';
 import { gzip, gunzip } from 'zlib';
 import type { Logger } from 'winston';
-import type { CacheEntry, CacheStats } from '@/types/index.js';
+import type { CacheEntry, CacheStats } from '../types/index.js';
 import type { CacheBackend } from './cache-manager.js';
 import { EventEmitter } from 'events';
 
@@ -82,7 +82,7 @@ export class FileCache extends EventEmitter implements CacheBackend {
   private diskUsageTimer?: NodeJS.Timeout;
   
   // Statistics
-  private stats = {
+  private internalStats = {
     hits: 0,
     misses: 0,
     sets: 0,
@@ -261,7 +261,7 @@ export class FileCache extends EventEmitter implements CacheBackend {
       this.metadata.totalSize += fileInfo.compressedSize || fileInfo.originalSize;
       await this.saveMetadata();
       
-      this.stats.sets++;
+      this.internalStats.sets++;
       this.recordOperation();
       
       this.emit('set', key, value, entryTtl);
@@ -311,7 +311,7 @@ export class FileCache extends EventEmitter implements CacheBackend {
       delete this.metadata.entries[key];
       await this.saveMetadata();
       
-      this.stats.deletes++;
+      this.internalStats.deletes++;
       this.recordOperation();
       
       this.emit('delete', key);
@@ -438,8 +438,8 @@ export class FileCache extends EventEmitter implements CacheBackend {
     
     return {
       totalKeys: entries.length,
-      hitCount: this.stats.hits,
-      missCount: this.stats.misses,
+      hitCount: this.internalStats.hits,
+      missCount: this.internalStats.misses,
       hitRate: this.calculateHitRate(),
       memoryUsage: this.metadata.totalSize,
       oldestEntry: entries.length > 0 ? oldestEntry : now,
@@ -497,7 +497,7 @@ export class FileCache extends EventEmitter implements CacheBackend {
     await this.saveMetadata();
     
     if (cleaned > 0) {
-      this.stats.cleanups++;
+      this.internalStats.cleanups++;
       this.emit('cleanup', cleaned);
       this.logger.debug('Cache cleanup completed', {
         cleaned,
@@ -729,7 +729,7 @@ export class FileCache extends EventEmitter implements CacheBackend {
         try {
           finalBuffer = await gzipAsync(originalBuffer);
           compressed = true;
-          this.stats.compressions++;
+          this.internalStats.compressions++;
         } catch (error) {
           this.logger.warn('Compression failed, using uncompressed', { error });
         }
@@ -741,7 +741,7 @@ export class FileCache extends EventEmitter implements CacheBackend {
       // Atomic rename
       await fs.rename(tempPath, compressed ? `${filePath}${FileCache.COMPRESSED_SUFFIX}` : filePath);
       
-      this.stats.diskWrites++;
+      this.internalStats.diskWrites++;
       
       return {
         originalSize,
@@ -767,12 +767,12 @@ export class FileCache extends EventEmitter implements CacheBackend {
       const actualPath = compressed ? `${filePath}${FileCache.COMPRESSED_SUFFIX}` : filePath;
       let buffer = await fs.readFile(actualPath);
       
-      this.stats.diskReads++;
+      this.internalStats.diskReads++;
       
       // Decompress if needed
       if (compressed) {
         buffer = await gunzipAsync(buffer);
-        this.stats.decompressions++;
+        this.internalStats.decompressions++;
       }
       
       // Parse JSON
@@ -934,33 +934,33 @@ export class FileCache extends EventEmitter implements CacheBackend {
 
   // Statistics methods
   private recordHit(): void {
-    this.stats.hits++;
+    this.internalStats.hits++;
     this.recordOperation();
   }
 
   private recordMiss(): void {
-    this.stats.misses++;
+    this.internalStats.misses++;
     this.recordOperation();
   }
 
   private recordOperation(): void {
-    this.stats.operations++;
+    this.internalStats.operations++;
     
     // Emit periodic stats
-    if (this.stats.operations % 100 === 0) {
+    if (this.internalStats.operations % 100 === 0) {
       this.emit('stats', {
-        operations: this.stats.operations,
+        operations: this.internalStats.operations,
         hitRate: this.calculateHitRate(),
-        diskReads: this.stats.diskReads,
-        diskWrites: this.stats.diskWrites,
-        compressions: this.stats.compressions,
-        decompressions: this.stats.decompressions,
+        diskReads: this.internalStats.diskReads,
+        diskWrites: this.internalStats.diskWrites,
+        compressions: this.internalStats.compressions,
+        decompressions: this.internalStats.decompressions,
       });
     }
   }
 
   private calculateHitRate(): number {
-    const total = this.stats.hits + this.stats.misses;
-    return total > 0 ? this.stats.hits / total : 0;
+    const total = this.internalStats.hits + this.internalStats.misses;
+    return total > 0 ? this.internalStats.hits / total : 0;
   }
 }

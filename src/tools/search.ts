@@ -34,9 +34,9 @@ import {
 import { z } from 'zod';
 
 // Internal imports
-import type { ToolContext, SearchParams, KrdsSearchResult } from '@/types/index.js';
-import { validateSearchParams } from '@/utils/validation.js';
-import { normalizeKoreanText } from '@/korean/text-processor.js';
+import type { ToolContext, SearchParams, KrdsSearchResult } from '../types/index.js';
+import { validateSearchParams } from '../utils/validation.js';
+import { KoreanTextProcessor } from '../korean/text-processor.js';
 
 // ============================================================================
 // Schema Definitions

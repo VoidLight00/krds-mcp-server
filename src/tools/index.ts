@@ -19,7 +19,7 @@
  */
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import type { ToolContext } from '@/types/index.js';
+import type { ToolContext } from '../types/index.js';
 
 // Import all tool registration functions
 import { registerSearchTool } from './search.js';

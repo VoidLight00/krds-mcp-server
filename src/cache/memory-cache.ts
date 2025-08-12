@@ -19,7 +19,7 @@
  */
 
 import type { Logger } from 'winston';
-import type { CacheEntry, CacheStats } from '@/types/index.js';
+import type { CacheEntry, CacheStats } from '../types/index.js';
 import type { CacheBackend } from './cache-manager.js';
 import { EventEmitter } from 'events';
 
@@ -53,7 +53,7 @@ export class MemoryCache extends EventEmitter implements CacheBackend {
   private tail: MemoryCacheEntry | null = null;
   
   // Statistics tracking
-  private stats = {
+  private internalStats = {
     hits: 0,
     misses: 0,
     sets: 0,
@@ -156,8 +156,8 @@ export class MemoryCache extends EventEmitter implements CacheBackend {
     this.addToHead(entry);
     
     // Update statistics
-    this.stats.sets++;
-    this.stats.memoryUsage += size;
+    this.internalStats.sets++;
+    this.internalStats.memoryUsage += size;
     this.recordOperation();
     
     this.emit('set', key, value, entryTtl);
@@ -185,8 +185,8 @@ export class MemoryCache extends EventEmitter implements CacheBackend {
     this.removeFromList(entry);
     
     // Update statistics
-    this.stats.deletes++;
-    this.stats.memoryUsage -= entry.size;
+    this.internalStats.deletes++;
+    this.internalStats.memoryUsage -= entry.size;
     this.recordOperation();
     
     this.emit('delete', key);
@@ -211,7 +211,7 @@ export class MemoryCache extends EventEmitter implements CacheBackend {
     this.tail = null;
     
     // Reset memory usage
-    this.stats.memoryUsage = 0;
+    this.internalStats.memoryUsage = 0;
     this.recordOperation();
     
     this.emit('clear', entryCount);
@@ -280,10 +280,10 @@ export class MemoryCache extends EventEmitter implements CacheBackend {
     
     return {
       totalKeys: this.cache.size,
-      hitCount: this.stats.hits,
-      missCount: this.stats.misses,
+      hitCount: this.internalStats.hits,
+      missCount: this.internalStats.misses,
       hitRate: this.calculateHitRate(),
-      memoryUsage: this.stats.memoryUsage,
+      memoryUsage: this.internalStats.memoryUsage,
       oldestEntry: this.cache.size > 0 ? oldestEntry : now,
       newestEntry: this.cache.size > 0 ? newestEntry : now,
     };
@@ -323,9 +323,9 @@ export class MemoryCache extends EventEmitter implements CacheBackend {
   } {
     return {
       entries: this.cache.size,
-      memoryUsageMB: this.stats.memoryUsage / (1024 * 1024),
+      memoryUsageMB: this.internalStats.memoryUsage / (1024 * 1024),
       hitRate: this.calculateHitRate(),
-      averageEntrySize: this.cache.size > 0 ? this.stats.memoryUsage / this.cache.size : 0,
+      averageEntrySize: this.cache.size > 0 ? this.internalStats.memoryUsage / this.cache.size : 0,
       lruHead: this.head?.key || null,
       lruTail: this.tail?.key || null,
     };
@@ -461,7 +461,7 @@ export class MemoryCache extends EventEmitter implements CacheBackend {
     // Check memory limit
     const memoryLimitBytes = this.options.maxMemoryMB * 1024 * 1024;
     
-    while ((this.stats.memoryUsage + newEntrySize) > memoryLimitBytes || 
+    while ((this.internalStats.memoryUsage + newEntrySize) > memoryLimitBytes || 
            this.cache.size >= this.options.maxSize) {
       
       if (!this.tail) {
@@ -480,7 +480,7 @@ export class MemoryCache extends EventEmitter implements CacheBackend {
     const evictedKey = this.tail.key;
     await this.delete(evictedKey);
     
-    this.stats.evictions++;
+    this.internalStats.evictions++;
     this.emit('eviction', evictedKey);
     
     this.logger.debug('LRU eviction', {
@@ -531,36 +531,36 @@ export class MemoryCache extends EventEmitter implements CacheBackend {
 
   // Statistics tracking
   private recordHit(): void {
-    this.stats.hits++;
+    this.internalStats.hits++;
     this.recordOperation();
   }
 
   private recordMiss(): void {
-    this.stats.misses++;
+    this.internalStats.misses++;
     this.recordOperation();
   }
 
   private recordOperation(): void {
-    this.stats.operations++;
+    this.internalStats.operations++;
     
     // Emit periodic stats
-    if (this.stats.operations % 1000 === 0) {
+    if (this.internalStats.operations % 1000 === 0) {
       this.emit('stats', {
-        operations: this.stats.operations,
+        operations: this.internalStats.operations,
         hitRate: this.calculateHitRate(),
-        memoryUsage: this.stats.memoryUsage,
+        memoryUsage: this.internalStats.memoryUsage,
         entries: this.cache.size,
       });
     }
   }
 
   private calculateHitRate(): number {
-    const total = this.stats.hits + this.stats.misses;
-    return total > 0 ? this.stats.hits / total : 0;
+    const total = this.internalStats.hits + this.internalStats.misses;
+    return total > 0 ? this.internalStats.hits / total : 0;
   }
 
   private formatMemoryUsage(): string {
-    const mb = this.stats.memoryUsage / (1024 * 1024);
+    const mb = this.internalStats.memoryUsage / (1024 * 1024);
     return `${mb.toFixed(2)}MB`;
   }
 }

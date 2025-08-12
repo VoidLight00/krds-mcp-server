@@ -21,7 +21,7 @@
 
 import { Redis, RedisOptions, Cluster, ClusterOptions } from 'ioredis';
 import type { Logger } from 'winston';
-import type { CacheEntry, CacheStats } from '@/types/index.js';
+import type { CacheEntry, CacheStats } from '../types/index.js';
 import type { CacheBackend } from './cache-manager.js';
 import { EventEmitter } from 'events';
 import { promisify } from 'util';
@@ -66,7 +66,7 @@ export class RedisCache extends EventEmitter implements CacheBackend {
   private poolIndex = 0;
   
   // Statistics tracking
-  private stats = {
+  private internalStats = {
     hits: 0,
     misses: 0,
     sets: 0,
@@ -200,7 +200,7 @@ export class RedisCache extends EventEmitter implements CacheBackend {
         await client.set(prefixedKey, serializedData);
       }
       
-      this.stats.sets++;
+      this.internalStats.sets++;
       this.recordOperation();
       
       this.emit('set', key, value, entryTtl);
@@ -235,7 +235,7 @@ export class RedisCache extends EventEmitter implements CacheBackend {
       const deleted = result > 0;
       
       if (deleted) {
-        this.stats.deletes++;
+        this.internalStats.deletes++;
         this.recordOperation();
         
         this.emit('delete', key);
@@ -395,8 +395,8 @@ export class RedisCache extends EventEmitter implements CacheBackend {
       
       return {
         totalKeys,
-        hitCount: this.stats.hits,
-        missCount: this.stats.misses,
+        hitCount: this.internalStats.hits,
+        missCount: this.internalStats.misses,
         hitRate: this.calculateHitRate(),
         memoryUsage,
         oldestEntry: 0, // Redis doesn't track creation time globally
@@ -409,8 +409,8 @@ export class RedisCache extends EventEmitter implements CacheBackend {
       
       return {
         totalKeys: 0,
-        hitCount: this.stats.hits,
-        missCount: this.stats.misses,
+        hitCount: this.internalStats.hits,
+        missCount: this.internalStats.misses,
         hitRate: this.calculateHitRate(),
         memoryUsage: 0,
         oldestEntry: Date.now(),
@@ -525,7 +525,7 @@ export class RedisCache extends EventEmitter implements CacheBackend {
       
       await pipeline.exec();
       
-      this.stats.sets += entries.size;
+      this.internalStats.sets += entries.size;
       this.recordOperation();
       
       this.emit('mset', Array.from(entries.keys()), entryTtl);
@@ -679,7 +679,7 @@ export class RedisCache extends EventEmitter implements CacheBackend {
 
   private setupClientEvents(client: Redis | Cluster, clientId: string): void {
     client.on('error', (error) => {
-      this.stats.connectionErrors++;
+      this.internalStats.connectionErrors++;
       this.logger.error(`Redis client ${clientId} error`, { error });
       this.emit('connection-error', error);
     });
@@ -728,7 +728,7 @@ export class RedisCache extends EventEmitter implements CacheBackend {
         
         const compressed = await gzipAsync(Buffer.from(serialized, RedisCache.KOREAN_ENCODING));
         entry.compressed = true;
-        this.stats.compressions++;
+        this.internalStats.compressions++;
         
         return `${RedisCache.COMPRESSION_PREFIX}${compressed.toString('base64')}`;
       }
@@ -751,7 +751,7 @@ export class RedisCache extends EventEmitter implements CacheBackend {
         const compressed = Buffer.from(compressedData, 'base64');
         const decompressed = await gunzipAsync(compressed);
         jsonData = decompressed.toString(RedisCache.KOREAN_ENCODING);
-        this.stats.decompressions++;
+        this.internalStats.decompressions++;
       } else {
         jsonData = data;
       }
@@ -840,37 +840,37 @@ export class RedisCache extends EventEmitter implements CacheBackend {
 
   // Statistics methods
   private recordHit(): void {
-    this.stats.hits++;
+    this.internalStats.hits++;
     this.recordOperation();
   }
 
   private recordMiss(): void {
-    this.stats.misses++;
+    this.internalStats.misses++;
     this.recordOperation();
   }
 
   private recordError(error: Error): void {
-    this.stats.errors++;
+    this.internalStats.errors++;
     this.recordOperation();
   }
 
   private recordOperation(): void {
-    this.stats.operations++;
+    this.internalStats.operations++;
     
     // Emit periodic stats
-    if (this.stats.operations % 1000 === 0) {
+    if (this.internalStats.operations % 1000 === 0) {
       this.emit('stats', {
-        operations: this.stats.operations,
+        operations: this.internalStats.operations,
         hitRate: this.calculateHitRate(),
-        errors: this.stats.errors,
-        compressions: this.stats.compressions,
-        decompressions: this.stats.decompressions,
+        errors: this.internalStats.errors,
+        compressions: this.internalStats.compressions,
+        decompressions: this.internalStats.decompressions,
       });
     }
   }
 
   private calculateHitRate(): number {
-    const total = this.stats.hits + this.stats.misses;
-    return total > 0 ? this.stats.hits / total : 0;
+    const total = this.internalStats.hits + this.internalStats.misses;
+    return total > 0 ? this.internalStats.hits / total : 0;
   }
 }

@@ -1,0 +1,141 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "MCP 서버 자동 로드 문제 해결",
+        "description": "Claude Code에서 KRDS MCP 서버가 자동으로 시작되지 않는 문제 해결",
+        "status": "done",
+        "priority": "critical",
+        "details": "현재 서버는 수동으로 실행 가능하지만 Claude Code가 자동으로 시작하지 못함. 다른 MCP 서버들과 비교하여 원인 파악 및 수정 필요.",
+        "testStrategy": "Claude Code 재시작 후 ps aux로 프로세스 확인",
+        "dependencies": [],
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "TypeScript 컴파일 오류 해결",
+        "description": "222개의 TypeScript 컴파일 오류 모두 수정",
+        "status": "pending",
+        "priority": "high",
+        "details": "현재 server.ts는 컴파일 오류가 많아 server-simple.ts만 작동. 타입 정의, import 문제 등 해결 필요.",
+        "testStrategy": "npm run build 실행하여 오류 없이 컴파일 확인",
+        "dependencies": [],
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "실제 웹 스크래핑 구현",
+        "description": "KRDS 웹사이트의 실제 콘텐츠를 가져오는 스크래핑 엔진 구현",
+        "status": "done",
+        "priority": "high",
+        "details": "현재 모조 데이터만 반환. Puppeteer와 Cheerio를 사용하여 실제 https://v04.krds.go.kr 콘텐츠 스크래핑 구현.",
+        "testStrategy": "실제 KRDS URL로 콘텐츠 추출 테스트",
+        "dependencies": [
+          "2"
+        ],
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "6개 MCP 도구 완전 구현",
+        "description": "문서화된 6개 도구를 모두 실제로 작동하도록 구현",
+        "status": "done",
+        "priority": "high",
+        "details": "search_documents, retrieve_content, navigate_site, process_images, export_documents, analyze_korean_text 도구 구현",
+        "testStrategy": "각 도구별 단위 테스트 및 통합 테스트",
+        "dependencies": [
+          "3"
+        ],
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "한국어 처리 기능 구현",
+        "description": "한국어 텍스트 분석 및 처리 기능 완벽 구현",
+        "status": "pending",
+        "priority": "medium",
+        "details": "Hangul.js, 형태소 분석기 등을 통합하여 한국어 처리 기능 구현. 로마자 변환, 키워드 추출, 감정 분석 포함.",
+        "testStrategy": "한국어 샘플 텍스트로 처리 기능 검증",
+        "dependencies": [
+          "2"
+        ],
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "캐싱 시스템 구현",
+        "description": "메모리, Redis, 파일 기반 다층 캐싱 시스템 구현",
+        "status": "pending",
+        "priority": "medium",
+        "details": "LRU 메모리 캐시, Redis 분산 캐시, 파일 시스템 캐시 구현. TTL 관리 및 캐시 무효화 전략 포함.",
+        "testStrategy": "캐시 히트율 및 성능 벤치마크",
+        "dependencies": [
+          "3"
+        ],
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Rate Limiting 구현",
+        "description": "KRDS 웹사이트 부하 방지를 위한 속도 제한 구현",
+        "status": "pending",
+        "priority": "medium",
+        "details": "분당 60 요청 제한, 동시 요청 5개 제한, robots.txt 준수",
+        "testStrategy": "부하 테스트로 제한 확인",
+        "dependencies": [
+          "3"
+        ],
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "데이터 내보내기 기능",
+        "description": "다양한 형식으로 데이터 내보내기 구현",
+        "status": "pending",
+        "priority": "low",
+        "details": "JSON, CSV, Excel, PDF, XML 형식 지원. 한국어 인코딩 문제 해결.",
+        "testStrategy": "각 형식별 내보내기 테스트",
+        "dependencies": [
+          "4"
+        ],
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "에러 핸들링 및 로깅",
+        "description": "포괄적인 에러 처리 및 로깅 시스템 구현",
+        "status": "pending",
+        "priority": "medium",
+        "details": "구조화된 로깅, 에러 추적, 디버그 모드 지원",
+        "testStrategy": "에러 시나리오 테스트",
+        "dependencies": [
+          "1"
+        ],
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "테스트 작성",
+        "description": "단위, 통합, E2E 테스트 작성",
+        "status": "pending",
+        "priority": "low",
+        "details": "80% 이상 코드 커버리지 달성. Jest 기반 테스트 스위트 구축.",
+        "testStrategy": "npm test 실행 및 커버리지 리포트 확인",
+        "dependencies": [
+          "4",
+          "5"
+        ],
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "created": "2025-01-11T19:00:00Z",
+      "lastModified": "2025-01-11T19:00:00Z",
+      "currentTag": "master",
+      "description": "Tasks for master context",
+      "updated": "2025-08-11T20:46:59.777Z"
+    }
+  }
+}

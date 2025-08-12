@@ -46,9 +46,9 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 
 // Import configuration and utilities
-import { loadConfig } from '@/utils/config.js';
-import { setupLogger } from '@/utils/logger.js';
-import { validateEnvironment } from '@/utils/environment.js';
+import { loadConfig } from './utils/config.js';
+import { setupLogger } from './utils/logger.js';
+import { validateEnvironment } from './utils/environment.js';
 
 // Import MCP tools registry
 import { 
@@ -56,15 +56,15 @@ import {
   validateToolDependencies,
   checkToolsHealth,
   TOOLS_CONFIG 
-} from '@/tools/index.js';
+} from './tools/index.js';
 
 // Import services for initialization
-import { KrdsService } from '@/services/krds-service.js';
-import { CacheManager } from '@/cache/cache-manager.js';
+import { KrdsService } from './services/krds-service.js';
+import { CacheManager } from './cache/cache-manager.js';
 
 // Type definitions
 import type { Logger } from 'winston';
-import type { ServerConfig } from '@/types/config.js';
+import type { ServerConfig } from './types/index.js';
 
 /**
  * Main KRDS MCP Server Class

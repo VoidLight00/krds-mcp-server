@@ -1,0 +1,94 @@
+# KRDS MCP Server - Product Requirements Document
+
+## 프로젝트 개요
+한국 정부 KRDS 웹사이트(https://v04.krds.go.kr)의 콘텐츠를 스크래핑하고 처리하는 Model Context Protocol(MCP) 서버 구축
+
+## 핵심 목표
+1. Claude Code에서 자동으로 로드되고 실행되는 MCP 서버 구현
+2. 실제 웹 스크래핑 기능 구현 (모조 데이터가 아닌 실제 데이터)
+3. 6개의 문서화된 도구 모두 완벽하게 작동하도록 구현
+4. 한국어 텍스트 처리 기능 완벽 지원
+5. TypeScript 컴파일 오류 완전 해결
+
+## 주요 기능 요구사항
+
+### 1. MCP 서버 기본 구조
+- Claude Code 자동 로드 문제 해결
+- STDIO 통신 프로토콜 올바른 구현
+- 에러 핸들링 및 로깅 시스템
+- 프로세스 생명주기 관리
+
+### 2. 웹 스크래핑 엔진
+- Puppeteer 기반 동적 콘텐츠 스크래핑
+- Cheerio를 사용한 HTML 파싱
+- Rate limiting (분당 60 요청 제한)
+- Robots.txt 준수
+- 재시도 메커니즘 (3회)
+
+### 3. 6개 핵심 도구 구현
+- search_documents: 키워드 기반 문서 검색
+- retrieve_content: URL별 콘텐츠 추출
+- navigate_site: 사이트 구조 탐색
+- process_images: 이미지 추출 및 처리
+- export_documents: 다양한 형식 내보내기
+- analyze_korean_text: 한국어 텍스트 분석
+
+### 4. 한국어 언어 처리
+- 형태소 분석 (korean-morphological-analyzer)
+- 한글 정규화 (hangul.js)
+- 키워드 추출
+- 감정 분석
+- 로마자 변환
+
+### 5. 캐싱 시스템
+- 메모리 캐시 (LRU, 100MB 제한)
+- Redis 캐시 (선택사항)
+- 파일 캐시 (/tmp/krds-cache)
+- TTL 관리 (기본 3600초)
+
+### 6. 데이터 내보내기
+- JSON 형식
+- CSV 형식
+- Excel (XLSX) 형식
+- PDF 형식
+- XML 형식
+
+## 기술 스택
+- TypeScript 5.3+
+- Node.js 18+
+- @modelcontextprotocol/sdk
+- Puppeteer (웹 스크래핑)
+- Cheerio (HTML 파싱)
+- Hangul.js (한국어 처리)
+- node-cache (메모리 캐싱)
+- Redis (분산 캐싱, 선택사항)
+
+## 성능 요구사항
+- 문서 검색: 1.5-3초
+- 한국어 분석: 50-200ms
+- 동시 처리: 최대 10개 요청
+- 메모리 사용: 최대 500MB
+
+## 보안 요구사항
+- HTTPS 전용 통신
+- 개인정보 자동 익명화
+- 접근 로그 기록
+- 데이터 암호화 저장
+
+## 품질 요구사항
+- TypeScript strict mode 준수
+- 80% 이상 테스트 커버리지
+- ESLint/Prettier 코드 스타일
+- 포괄적인 에러 처리
+
+## 배포 요구사항
+- npm 패키지로 배포 가능
+- Docker 컨테이너 지원
+- PM2 프로세스 관리 지원
+- 환경별 설정 파일
+
+## 문서화 요구사항
+- 한국어 README
+- API 문서
+- 사용 예제
+- 트러블슈팅 가이드

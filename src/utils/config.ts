@@ -12,7 +12,7 @@
 import { config as dotenvConfig } from 'dotenv';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import type { ServerConfig, ValidationResult } from '@/types/index.js';
+import type { ServerConfig, ValidationResult } from '../types/index.js';
 
 // Load environment variables
 dotenvConfig();
@@ -67,7 +67,7 @@ export async function loadConfig(): Promise<ServerConfig> {
       retry: {
         maxAttempts: parseInt(process.env.SCRAPING_MAX_ATTEMPTS || '3', 10),
         delayMs: parseInt(process.env.SCRAPING_RETRY_DELAY || '1000', 10),
-        backoffMultiplier: parseFloat(process.env.SCRAPING_BACKOFF_MULTIPLIER || '2', 10),
+        backoffMultiplier: parseFloat(process.env.SCRAPING_BACKOFF_MULTIPLIER || '2'),
       },
     },
     

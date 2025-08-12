@@ -12,7 +12,7 @@
 import winston from 'winston';
 import { join } from 'path';
 import { existsSync, mkdirSync } from 'fs';
-import type { LoggingConfig } from '@/types/index.js';
+import type { LoggingConfig } from '../types/index.js';
 
 /**
  * Setup and configure Winston logger
@@ -93,3 +93,26 @@ function parseSize(size: string): number {
   const [, num, unit] = match;
   return parseInt(num, 10) * (units[unit || 'b'] || 1);
 }
+
+/**
+ * Default logger instance for use when config is not available
+ */
+export const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      )
+    })
+  ],
+  defaultMeta: {
+    service: 'krds-mcp-server'
+  }
+});
